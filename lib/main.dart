@@ -1,8 +1,12 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:safesuit_bank/core/data/models/cardModel.dart';
 import 'package:safesuit_bank/core/data/models/userModel.dart';
 import 'package:safesuit_bank/core/domain/entities/card.dart';
 import 'package:safesuit_bank/core/domain/entities/user.dart';
+import 'package:safesuit_bank/core/presentation/screers/home.dart';
 import 'package:safesuit_bank/core/presentation/widgets/calse.dart';
 import 'package:safesuit_bank/core/presentation/widgets/imagenes.dart';
 import 'package:safesuit_bank/core/presentation/widgets/loginPage.dart';
@@ -65,8 +69,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
 
+    Future<void> _auth() async {
+      bool authenticated = false;
+      try {
+        authenticated = await _localAuthentication.authenticate(
+            localizedReason: "Autenticate para acceder",
+            options:
+                AuthenticationOptions(stickyAuth: true, useErrorDialogs: true));
+      } catch (e) {
+        print(e);
+      }
+      if (authenticated) {
+        Navigator.pushReplacement<void, void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => HomeView(),
+            ));
+      } else {
+        print("fallo");
+      }
+    }
   void _incrementCounter() {
+    
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -79,8 +105,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = User(name: "Brandon", lastName: "Lopez", telefono: "1232123", email: "Lopez.Diaz@gmail.com", password: "1234");
-    final CardEntity card = CardEntity(number: "123456789", ccv: 123, expireDate: "01/26", owner: "Zea", bankName: "Visa");
+    bool _isChecked = false;
+
+    String _phoneNumber = "";
+    String _password = "";
+    final User user = User(
+        name: "Brandon",
+        lastName: "Lopez",
+        telefono: "1232123",
+        email: "Lopez.Diaz@gmail.com",
+        password: "1234");
+    final CardEntity card = CardEntity(
+        number: "123456789",
+        ccv: 123,
+        expireDate: "01/26",
+        owner: "Zea",
+        bankName: "Visa");
     final UserModel userModel = UserModel.fromEntity(user);
     final CardModel cardModel = CardModel.fromEntity(card);
     // This method is rerun every time setState is called, for instance as done
@@ -109,68 +149,109 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(15)),
               child: Column(
                 children: [
-                LoginPage(),
+                  Image(
+                    image: AssetImage("assets/images/Oxxo.png"),
+                    height: 175,
+                    fit: BoxFit.cover,
+                  ),
+                  TextField(
+                      decoration:
+                          InputDecoration(hintText: "Numero de telefono"),
+                      controller: TextEditingController(text: _phoneNumber)),
+                  TextField(
+                      decoration: InputDecoration(hintText: "Contraseña"),
+                      controller: TextEditingController(text: _password)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                        value: _isChecked,
+                        onChanged: (newValue) =>
+                            {setState(() => _isChecked = newValue!)},
+                        checkColor: Colors.blue,
+                        fillColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                      Text("Mantener sesion activa"),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => HomeView()));
+                    },
+                    child: Text(
+                      "Presiona",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blue)),
+                  ),
+                  const Text("O"),
+                  IconButton(onPressed: () => _auth(), icon: const Icon(Icons.fingerprint))
 
-                //   //tipo (img)
-                //   Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       //Nombre o logo
-                //       // const Text("Spin",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 25)),
-                //       TituloWidget(),
-                //       ElevatedButton(onPressed: () => {}, child: Text('Press')),
-                //       // Row(
-                //       //   mainAxisAlignment: MainAxisAlignment.start,
-                //       //   children: [
-                //       //     Image.asset(
-                //       //       "assets/images/6404100.png",
-                //       //       height: 35.0,
-                //       //     ),
-                //       //     const SizedBox(width: 90.0,),
-                //       //     const Icon(Icons.add_business_sharp,color: Colors.white,),
-                //       //     // CardWidget(),
-                //       //   ],
-                //       // ),
-                //       ImagenesWidget(),
-                //     ],
-                //   ),
-                //   //numero de la tarjeta
-                  
-                //   const Text(
-                //     "0000 0000 0000 0000",
-                //     style: TextStyle(
-                //         color: Color.fromARGB(255, 255, 255, 255),
-                //         fontSize: 15,
-                //         fontFamily: 'card'),
-                //   ),
-                //   //fecha
-                //   // const Row(
-                //   //   mainAxisAlignment: MainAxisAlignment.center,
-                //   //   children: [
-                //   //     Text("Valido hasta:",style: TextStyle(color: Colors.white70,fontSize: 5),),
-                //   //     Text("01/26",style: TextStyle(color: Colors.white70,fontSize: 12),),
-                //   //   ]
-                //   // )
-                //   ValidoWidget(),
-                //   Text(userModel.name, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
-                //   demo1(user: user),
-                //   Text(cardModel.bankName, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
-                //   //Bancaria
-                //   const Padding(
-                //     padding: EdgeInsets.all(12),
-                //     child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.end,
-                //         children: [
-                //           Text(
-                //             "VISA",
-                //             style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 17,
-                //                 fontWeight: FontWeight.bold),
-                //           ),
-                //         ]),
-                //   )
-                 ],
+                  // LoginPage(),
+
+                  //   //tipo (img)
+                  //   Column(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       //Nombre o logo
+                  //       // const Text("Spin",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 25)),
+                  //       TituloWidget(),
+                  //       ElevatedButton(onPressed: () => {}, child: Text('Press')),
+                  //       // Row(
+                  //       //   mainAxisAlignment: MainAxisAlignment.start,
+                  //       //   children: [
+                  //       //     Image.asset(
+                  //       //       "assets/images/6404100.png",
+                  //       //       height: 35.0,
+                  //       //     ),
+                  //       //     const SizedBox(width: 90.0,),
+                  //       //     const Icon(Icons.add_business_sharp,color: Colors.white,),
+                  //       //     // CardWidget(),
+                  //       //   ],
+                  //       // ),
+                  //       ImagenesWidget(),
+                  //     ],
+                  //   ),
+                  //   //numero de la tarjeta
+
+                  //   const Text(
+                  //     "0000 0000 0000 0000",
+                  //     style: TextStyle(
+                  //         color: Color.fromARGB(255, 255, 255, 255),
+                  //         fontSize: 15,
+                  //         fontFamily: 'card'),
+                  //   ),
+                  //   //fecha
+                  //   // const Row(
+                  //   //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   //   children: [
+                  //   //     Text("Valido hasta:",style: TextStyle(color: Colors.white70,fontSize: 5),),
+                  //   //     Text("01/26",style: TextStyle(color: Colors.white70,fontSize: 12),),
+                  //   //   ]
+                  //   // )
+                  //   ValidoWidget(),
+                  //   Text(userModel.name, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
+                  //   demo1(user: user),
+                  //   Text(cardModel.bankName, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
+                  //   //Bancaria
+                  //   const Padding(
+                  //     padding: EdgeInsets.all(12),
+                  //     child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.end,
+                  //         children: [
+                  //           Text(
+                  //             "VISA",
+                  //             style: TextStyle(
+                  //                 color: Colors.white,
+                  //                 fontSize: 17,
+                  //                 fontWeight: FontWeight.bold),
+                  //           ),
+                  //         ]),
+                  //   )
+                ],
               ))),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

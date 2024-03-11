@@ -37,6 +37,7 @@ class HomeView extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.exit_to_app),
           title: const Text('Cerrar Sesión'),
+          
         )
       ]),
       bottomNavigationBar: BottomNavigationBar(items: const [

@@ -5,13 +5,17 @@ import 'package:safesuit_bank/core/presentation/screers/home.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPage createState() => _LoginPage();
+  
 }
 
 class _LoginPage extends State<LoginPage> {
+  
   bool _isChecked = false;
 
   String _phoneNumber = "";
   String _password = "";
+  
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -46,6 +50,7 @@ class _LoginPage extends State<LoginPage> {
         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue)),
         
       ),
-    ]);
+    ]
+    );
   }
 }
