@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safesuit_bank/main.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -37,6 +38,9 @@ class HomeView extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.exit_to_app),
           title: const Text('Cerrar Sesión'),
+          onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+              },
           
         )
       ]),

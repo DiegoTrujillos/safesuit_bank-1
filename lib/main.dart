@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:safesuit_bank/core/data/models/cardModel.dart';
@@ -20,243 +18,137 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Safe Suit Bank',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _isChecked = false;
   final LocalAuthentication _localAuthentication = LocalAuthentication();
 
-    Future<void> _auth() async {
-      bool authenticated = false;
-      try {
-        authenticated = await _localAuthentication.authenticate(
-            localizedReason: "Autenticate para acceder",
-            options:
-                AuthenticationOptions(stickyAuth: true, useErrorDialogs: true));
-      } catch (e) {
-        print(e);
-      }
-      if (authenticated) {
-        Navigator.pushReplacement<void, void>(
-            context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => HomeView(),
-            ));
-      } else {
-        print("fallo");
-      }
+  Future<void> _auth() async {
+    bool authenticated = true;
+    try {
+      authenticated = await _localAuthentication.authenticate(
+          localizedReason: "Autenticate para acceder",
+          options: const AuthenticationOptions(stickyAuth: true, useErrorDialogs: true));
+    } catch (e) {
+      print(e);
     }
+    if (authenticated) {
+      Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => HomeView(),
+          ));
+    } else {
+      print("fallo");
+    }
+  }
+
   void _incrementCounter() {
-    
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool _isChecked = false;
-
+    // Las variables _isChecked, _phoneNumber y _password deberían definirse fuera del método build para evitar redeclaraciones en cada reconstrucción. Aquí se mantienen para coincidir con la estructura del código proporcionado.
     String _phoneNumber = "";
     String _password = "";
-    final User user = User(
-        name: "Brandon",
-        lastName: "Lopez",
-        telefono: "1232123",
-        email: "Lopez.Diaz@gmail.com",
-        password: "1234");
-    final CardEntity card = CardEntity(
-        number: "123456789",
-        ccv: 123,
-        expireDate: "01/26",
-        owner: "Zea",
-        bankName: "Visa");
-    final UserModel userModel = UserModel.fromEntity(user);
-    final CardModel cardModel = CardModel.fromEntity(card);
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //   title: Text(widget.title),
+      // ),
       body: Center(
-          child: Container(
-              padding: const EdgeInsets.all(11.0),
-              width: 420,
-              height: 500,
-              decoration: BoxDecoration(
-                  color: const Color.fromRGBO(67, 3, 123, 1),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Column(
+        child: Container(
+          padding: const EdgeInsets.all(11.0),
+          width: 480,
+          height: 550,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.black, 
+              width: 2.0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Image(
+                image: AssetImage("assets/images/Logo.jpg"),
+                height: 200,
+                fit: BoxFit.contain,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: "Numero de telefono"),
+                controller: TextEditingController(text: _phoneNumber)
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: "Contraseña"),
+                controller: TextEditingController(text: _password)
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
-                    image: AssetImage("assets/images/Oxxo.png"),
-                    height: 175,
-                    fit: BoxFit.cover,
-                  ),
-                  TextField(
-                      decoration:
-                          InputDecoration(hintText: "Numero de telefono"),
-                      controller: TextEditingController(text: _phoneNumber)),
-                  TextField(
-                      decoration: InputDecoration(hintText: "Contraseña"),
-                      controller: TextEditingController(text: _password)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: _isChecked,
-                        onChanged: (newValue) =>
-                            {setState(() => _isChecked = newValue!)},
-                        checkColor: Colors.blue,
-                        fillColor: MaterialStateProperty.all(Colors.red),
-                      ),
-                      Text("Mantener sesion activa"),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomeView()));
+                  Checkbox(
+                    value: _isChecked,
+                    onChanged: (newValue) {
+                      setState(() => _isChecked = newValue!);
                     },
-                    child: Text(
-                      "Presiona",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blue)),
+                    checkColor: Colors.black,
+                    fillColor: MaterialStateProperty.all(Colors.white),
                   ),
-                  const Text("O"),
-                  IconButton(onPressed: () => _auth(), icon: const Icon(Icons.fingerprint))
-
-                  // LoginPage(),
-
-                  //   //tipo (img)
-                  //   Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       //Nombre o logo
-                  //       // const Text("Spin",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 25)),
-                  //       TituloWidget(),
-                  //       ElevatedButton(onPressed: () => {}, child: Text('Press')),
-                  //       // Row(
-                  //       //   mainAxisAlignment: MainAxisAlignment.start,
-                  //       //   children: [
-                  //       //     Image.asset(
-                  //       //       "assets/images/6404100.png",
-                  //       //       height: 35.0,
-                  //       //     ),
-                  //       //     const SizedBox(width: 90.0,),
-                  //       //     const Icon(Icons.add_business_sharp,color: Colors.white,),
-                  //       //     // CardWidget(),
-                  //       //   ],
-                  //       // ),
-                  //       ImagenesWidget(),
-                  //     ],
-                  //   ),
-                  //   //numero de la tarjeta
-
-                  //   const Text(
-                  //     "0000 0000 0000 0000",
-                  //     style: TextStyle(
-                  //         color: Color.fromARGB(255, 255, 255, 255),
-                  //         fontSize: 15,
-                  //         fontFamily: 'card'),
-                  //   ),
-                  //   //fecha
-                  //   // const Row(
-                  //   //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   //   children: [
-                  //   //     Text("Valido hasta:",style: TextStyle(color: Colors.white70,fontSize: 5),),
-                  //   //     Text("01/26",style: TextStyle(color: Colors.white70,fontSize: 12),),
-                  //   //   ]
-                  //   // )
-                  //   ValidoWidget(),
-                  //   Text(userModel.name, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
-                  //   demo1(user: user),
-                  //   Text(cardModel.bankName, style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
-                  //   //Bancaria
-                  //   const Padding(
-                  //     padding: EdgeInsets.all(12),
-                  //     child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.end,
-                  //         children: [
-                  //           Text(
-                  //             "VISA",
-                  //             style: TextStyle(
-                  //                 color: Colors.white,
-                  //                 fontSize: 17,
-                  //                 fontWeight: FontWeight.bold),
-                  //           ),
-                  //         ]),
-                  //   )
+                  Text("Mantener sesion activa"),
                 ],
-              ))),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeView()));
+                },
+                child: Text(
+                  "Inicia sesión",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey)
+                ),
+              ),
+              const Text("\nO"),
+              IconButton(
+                onPressed: () => _auth(), 
+                icon: const Icon(Icons.fingerprint, size: 50,)
+              ),
+            ],
+          ),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
