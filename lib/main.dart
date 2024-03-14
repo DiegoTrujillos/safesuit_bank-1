@@ -38,12 +38,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   bool _isChecked = false;
   final LocalAuthentication _localAuthentication = LocalAuthentication();
 
   Future<void> _auth() async {
-    bool authenticated = true;
+    bool authenticated = false;
     try {
       authenticated = await _localAuthentication.authenticate(
           localizedReason: "Autenticate para acceder",
@@ -55,18 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.pushReplacement<void, void>(
           context,
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => HomeView(),
-          ));
+            builder: ((context) => HomeView())));
     } else {
-      print("fallo");
+      print("fallo auth");
     }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const Text("\nO"),
               IconButton(
-                onPressed: () => _auth(), 
+                onPressed: () => {_auth(), },
                 icon: const Icon(Icons.fingerprint, size: 50,)
               ),
             ],
