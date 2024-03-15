@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:safesuit_bank/core/presentation/screers/home.dart';
+import 'package:safesuit_bank/core/presentation/screers/transfer.dart';
 
 
 void main() {
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // Las variables _isChecked, _phoneNumber y _password deberían definirse fuera del método build para evitar redeclaraciones en cada reconstrucción. Aquí se mantienen para coincidir con la estructura del código proporcionado.
-    String _phoneNumber = "";
+    String _phoneNumber = "1";
     String _password = "";
 
     return Scaffold(
@@ -127,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               const Text("\nO"),
+              
               IconButton(
                 onPressed: () => {_auth(), },
                 icon: const Icon(Icons.fingerprint, size: 50,)
