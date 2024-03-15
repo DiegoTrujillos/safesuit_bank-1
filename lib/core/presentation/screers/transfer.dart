@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safesuit_bank/core/presentation/screers/home.dart';
 
 class Trans extends StatelessWidget {
   @override
@@ -35,7 +36,18 @@ class _TransferenciasPageState extends State<TransferenciasPage> {
             color: Color.fromARGB(255, 242, 244, 250)
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 66, 79, 120),
+        backgroundColor: const Color.fromARGB(255, 66, 79, 120),
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Color.fromARGB(255, 242, 244, 250),
+            size: 32,
+            ),
+
+        ),
       ),
       //backgroundColor: Color.fromARGB(255, 56, 99, 228),
       body: Center(
