@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:safesuit_bank/core/presentation/screers/home.dart';
-import 'package:safesuit_bank/core/presentation/screers/transfer.dart';
+import 'package:safesuit_bank/core/presentation/screers/transfer3.dart';
 
 
 void main() {

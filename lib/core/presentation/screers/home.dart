@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safesuit_bank/core/presentation/screers/transfer.dart';
+import 'package:safesuit_bank/core/presentation/screers/transfer2.dart';
 import 'package:safesuit_bank/main.dart';
 
 class HomeView extends StatelessWidget {
@@ -28,7 +28,7 @@ class HomeView extends StatelessWidget {
           leading: const Icon(Icons.arrow_forward),
           title: const Text('Transferencias'),
           onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Trans()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Trans1()));
               },
         ),
         ListTile(
